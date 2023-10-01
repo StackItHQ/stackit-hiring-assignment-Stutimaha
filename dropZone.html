@@ -202,8 +202,16 @@
 
     // Function to display success message
     function showSuccess(response) {
-      dropZone.innerHTML = response;
-    }
+    // Create a hyperlink with the provided URL
+    var link = document.createElement('a');
+    link.href = 'https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0';
+    link.target = '_blank'; // Open the link in a new tab
+    link.textContent = 'CSV imported successfully! Open Google Sheets and find your worksheet!!';
+
+    // Clear the drop zone and append the hyperlink
+    dropZone.innerHTML = '';
+    dropZone.appendChild(link);
+  }
 
     // Function to display error message
     function showError(error) {

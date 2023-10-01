@@ -52,6 +52,11 @@
       font-weight: bold;
       margin: 10px;
     }
+
+    /* Additional styles for filters */
+    .filterRow {
+      margin: 5px 0;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -63,36 +68,13 @@
     <h2>Select Columns to Import</h2>
     <p>Choose which columns you want to import from the CSV file.</p>
     <table id="table"></table>
-
-    <!-- Add filter options -->
-    <h2>Filter Data</h2>
-    <p>Apply filters to the data before importing.</p>
-    <div>
-      <label for="filterColumn">Filter Column:</label>
-      <select id="filterColumn"></select>
-    </div>
-    <div>
-      <label for="filterType">Filter Type:</label>
-      <select id="filterType">
-        <option value="equals">Equals</option>
-        <option value="contains">Contains</option>
-        <option value="startsWith">Starts With</option>
-        <option value="endsWith">Ends With</option>
-        <option value="notEqual">Not Equal</option>
-        <option value="greaterThan">Greater Than</option>
-        <option value="lessThan">Less Than</option>
-        <option value="isNull">Is Null</option>
-        <option value="isNotNull">Is Not Null</option>
-      </select>
-    </div>
-    <div>
-      <label for="filterValue">Filter Value:</label>
-      <input type="text" id="filterValue">
-    </div>
-
     <h2>Enter Sheet Name</h2>
     <p>Enter a name for the sheet where you want to import the data.</p>
     <input type="text" id="sheetName" value="Sheet1" required><br><br>
+    <h2>Apply Filters</h2>
+    <div id="filters"></div>
+    <input type="button" id="addFilter" value="Add Filter">
+    <br><br>
     <input type="button" id="submit" value="Import to Sheet">
   </form>
   <p id="error"></p>
@@ -102,11 +84,10 @@
     var form = document.getElementById('form');
     var table = document.getElementById('table');
     var sheetName = document.getElementById('sheetName');
-    var filterColumn = document.getElementById('filterColumn');
-    var filterType = document.getElementById('filterType');
-    var filterValue = document.getElementById('filterValue');
     var submit = document.getElementById('submit');
     var error = document.getElementById('error');
+    var filtersContainer = document.getElementById('filters');
+    var addFilterButton = document.getElementById('addFilter');
 
     dropZone.addEventListener('dragover', function (e) {
       e.preventDefault();
@@ -143,16 +124,6 @@
             tr.appendChild(th);
           }
           table.appendChild(tr);
-
-          // Populate filter column dropdown
-          filterColumn.innerHTML = '';
-          for (var i = 0; i < header.length; i++) {
-            var option = document.createElement('option');
-            option.value = i;
-            option.text = header[i];
-            filterColumn.appendChild(option);
-          }
-
           form.style.display = 'block';
           error.style.display = 'none';
 
@@ -166,23 +137,18 @@
             }
             if (columns.length > 0) {
               var sheetNameValue = sheetName.value;
-              var filterColumnValue = filterColumn.value;
-              var filterTypeValue = filterType.value;
-              var filterValueValue = filterValue.value;
-
-              if (sheetNameValue && filterColumnValue !== null && filterTypeValue !== null && filterValueValue !== null) {
+              if (sheetNameValue) {
+                var filters = getFilters();
                 var data = {
                   csv: csv,
                   columns: columns,
                   sheetName: sheetNameValue,
-                  filterColumn: parseInt(filterColumnValue),  // Convert to integer
-                  filterType: filterTypeValue,
-                  filterValue: filterValueValue
+                  filters: filters
                 };
                 google.script.run.withSuccessHandler(showSuccess).withFailureHandler(showError).importCSV(data);
                 form.style.display = 'none';
               } else {
-                error.innerHTML = 'Please enter a sheet name and select filter options.';
+                error.innerHTML = 'Please enter a sheet name.';
                 error.style.display = 'block';
               }
             } else {
@@ -204,6 +170,73 @@
     function showError(error) {
       console.error(error);
       dropZone.innerHTML = 'An error occurred. Please try again.';
+    }
+
+    addFilterButton.addEventListener('click', function () {
+      createFilterRow();
+    });
+
+    function createFilterRow() {
+      var filterRow = document.createElement('div');
+      filterRow.className = 'filterRow';
+
+      var columnDropdown = createColumnDropdown();
+      var typeDropdown = createTypeDropdown();
+      var valueInput = document.createElement('input');
+      valueInput.type = 'text';
+      valueInput.placeholder = 'Filter Value';
+
+      var removeFilterButton = document.createElement('input');
+      removeFilterButton.type = 'button';
+      removeFilterButton.value = 'Remove Filter';
+      removeFilterButton.addEventListener('click', function () {
+        filtersContainer.removeChild(filterRow);
+      });
+
+      filterRow.appendChild(columnDropdown);
+      filterRow.appendChild(typeDropdown);
+      filterRow.appendChild(valueInput);
+      filterRow.appendChild(removeFilterButton);
+
+      filtersContainer.appendChild(filterRow);
+    }
+
+    function createColumnDropdown() {
+      var dropdown = document.createElement('select');
+      var headerCells = table.querySelectorAll('th');
+      if (headerCells && headerCells.length > 0) {
+        for (var i = 0; i < headerCells.length; i++) {
+          var option = document.createElement('option');
+          option.value = i;
+          option.text = headerCells[i].innerText;
+          dropdown.appendChild(option);
+        }
+      }
+      return dropdown;
+    }
+
+    function createTypeDropdown() {
+      var dropdown = document.createElement('select');
+      var filterTypes = ['equals', 'contains', 'startsWith', 'endsWith', 'notEqual', 'greaterThan', 'lessThan', 'isNull', 'isNotNull'];
+      for (var i = 0; i < filterTypes.length; i++) {
+        var option = document.createElement('option');
+        option.value = filterTypes[i];
+        option.text = filterTypes[i];
+        dropdown.appendChild(option);
+      }
+      return dropdown;
+    }
+
+    function getFilters() {
+      var filterRows = filtersContainer.querySelectorAll('.filterRow');
+      var filters = [];
+      filterRows.forEach(function (filterRow) {
+        var column = filterRow.querySelector('select').value;
+        var type = filterRow.querySelectorAll('select')[1].value;
+        var value = filterRow.querySelector('input[type=text]').value;
+        filters.push({ column: column, type: type, value: value });
+      });
+      return filters;
     }
   </script>
 </body>

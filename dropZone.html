@@ -1,6 +1,8 @@
 <html>
 <head>
+  <!-- Styling for the drop zone and form -->
   <style>
+    /* Styling for the drop zone */
     #drop_zone {
       border: 2px dashed #bbb;
       border-radius: 5px;
@@ -10,15 +12,18 @@
       font-size: 20px;
     }
 
+    /* Styling for the drop zone when dragging over it */
     #drop_zone.dragover {
       border-color: #999;
     }
 
+    /* Styling for the form */
     #form {
       display: none;
       margin: 10px;
     }
 
+    /* Styling for the submit button */
     #submit {
       background-color: #4CAF50;
       color: white;
@@ -27,26 +32,31 @@
       cursor: pointer;
     }
 
+    /* Styling for the table */
     #table {
       border-collapse: collapse;
       margin: 10px;
     }
 
+    /* Styling for table cells */
     #table td {
       border: 1px solid #ddd;
       padding: 5px;
     }
 
+    /* Styling for table header cells */
     #table th {
       background-color: #f0f0f0;
       border: 1px solid #ddd;
       padding: 5px;
     }
 
+    /* Styling for checkbox */
     input[type=checkbox] {
       transform: scale(1.5);
     }
 
+    /* Styling for error messages */
     #error {
       color: red;
       font-weight: bold;
@@ -58,28 +68,43 @@
       margin: 5px 0;
     }
   </style>
+
+  <!-- Include the PapaParse library for CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
+  <!-- Header and introductory information -->
   <h1>CSV Importer for Google Sheets</h1>
   <p>Drag and drop a CSV file onto the drop zone below to import it into a Google Sheet.</p>
+
+  <!-- Drop zone for CSV file -->
   <div id="drop_zone">Drop CSV file here</div>
+
+  <!-- Form for selecting columns, entering sheet name, applying filters, and submitting -->
   <form id="form">
     <h2>Select Columns to Import</h2>
     <p>Choose which columns you want to import from the CSV file.</p>
     <table id="table"></table>
+
     <h2>Enter Sheet Name</h2>
     <p>Enter a name for the sheet where you want to import the data.</p>
     <input type="text" id="sheetName" value="Sheet1" required><br><br>
+
     <h2>Apply Filters</h2>
     <div id="filters"></div>
     <input type="button" id="addFilter" value="Add Filter">
     <br><br>
+
+    <!-- Button to submit the form and trigger the import process -->
     <input type="button" id="submit" value="Import to Sheet">
   </form>
+
+  <!-- Display error messages -->
   <p id="error"></p>
 
+  <!-- JavaScript code for handling file drop, form submission, and filter functionality -->
   <script>
+    // Variable declarations for various elements
     var dropZone = document.getElementById('drop_zone');
     var form = document.getElementById('form');
     var table = document.getElementById('table');
@@ -89,6 +114,7 @@
     var filtersContainer = document.getElementById('filters');
     var addFilterButton = document.getElementById('addFilter');
 
+    // Event listeners for drag and drop functionality
     dropZone.addEventListener('dragover', function (e) {
       e.preventDefault();
       dropZone.classList.add('dragover');
@@ -103,13 +129,19 @@
       e.preventDefault();
       dropZone.classList.remove('dragover');
       var file = e.dataTransfer.files[0];
+
+      // Check if the dropped file is a CSV file
       if (file.type === 'text/csv') {
         var reader = new FileReader();
         reader.readAsText(file);
+
+        // Process the CSV file content
         reader.onload = function () {
           var csv = reader.result;
           var array = Papa.parse(csv).data;
           var header = array[0];
+
+          // Dynamically create checkboxes for each column in the CSV file
           table.innerHTML = '';
           var tr = document.createElement('tr');
           for (var i = 0; i < header.length; i++) {
@@ -127,7 +159,9 @@
           form.style.display = 'block';
           error.style.display = 'none';
 
+          // Event listener for form submission
           submit.addEventListener('click', function () {
+            // Gather selected columns and other form data for submission
             var checkboxes = table.querySelectorAll('input[type=checkbox]');
             var columns = [];
             for (var i = 0; i < checkboxes.length; i++) {
@@ -135,6 +169,7 @@
                 columns.push(checkboxes[i].value);
               }
             }
+
             if (columns.length > 0) {
               var sheetNameValue = sheetName.value;
               if (sheetNameValue) {
@@ -145,6 +180,8 @@
                   sheetName: sheetNameValue,
                   filters: filters
                 };
+
+                // Trigger the importCSV function with Google Apps Script
                 google.script.run.withSuccessHandler(showSuccess).withFailureHandler(showError).importCSV(data);
                 form.style.display = 'none';
               } else {
@@ -163,29 +200,35 @@
       }
     });
 
+    // Function to display success message
     function showSuccess(response) {
       dropZone.innerHTML = response;
     }
 
+    // Function to display error message
     function showError(error) {
       console.error(error);
       dropZone.innerHTML = 'An error occurred. Please try again.';
     }
 
+    // Event listener for adding filter rows
     addFilterButton.addEventListener('click', function () {
       createFilterRow();
     });
 
+    // Function to create a new filter row in the form
     function createFilterRow() {
       var filterRow = document.createElement('div');
       filterRow.className = 'filterRow';
 
+      // Create dropdowns and input elements for filter parameters
       var columnDropdown = createColumnDropdown();
       var typeDropdown = createTypeDropdown();
       var valueInput = document.createElement('input');
       valueInput.type = 'text';
       valueInput.placeholder = 'Filter Value';
 
+      // Create a button to remove the filter row
       var removeFilterButton = document.createElement('input');
       removeFilterButton.type = 'button';
       removeFilterButton.value = 'Remove Filter';
@@ -193,14 +236,17 @@
         filtersContainer.removeChild(filterRow);
       });
 
+      // Append elements to the filter row
       filterRow.appendChild(columnDropdown);
       filterRow.appendChild(typeDropdown);
       filterRow.appendChild(valueInput);
       filterRow.appendChild(removeFilterButton);
 
+      // Append the filter row to the container
       filtersContainer.appendChild(filterRow);
     }
 
+    // Function to create a dropdown for selecting columns
     function createColumnDropdown() {
       var dropdown = document.createElement('select');
       var headerCells = table.querySelectorAll('th');
@@ -215,6 +261,7 @@
       return dropdown;
     }
 
+    // Function to create a dropdown for selecting filter types
     function createTypeDropdown() {
       var dropdown = document.createElement('select');
       var filterTypes = ['equals', 'contains', 'startsWith', 'endsWith', 'notEqual', 'greaterThan', 'lessThan', 'isNull', 'isNotNull'];
@@ -227,6 +274,7 @@
       return dropdown;
     }
 
+    // Function to retrieve filter data from the form
     function getFilters() {
       var filterRows = filtersContainer.querySelectorAll('.filterRow');
       var filters = [];

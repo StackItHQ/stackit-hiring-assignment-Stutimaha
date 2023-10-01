@@ -63,6 +63,33 @@
     <h2>Select Columns to Import</h2>
     <p>Choose which columns you want to import from the CSV file.</p>
     <table id="table"></table>
+
+    <!-- Add filter options -->
+    <h2>Filter Data</h2>
+    <p>Apply filters to the data before importing.</p>
+    <div>
+      <label for="filterColumn">Filter Column:</label>
+      <select id="filterColumn"></select>
+    </div>
+    <div>
+      <label for="filterType">Filter Type:</label>
+      <select id="filterType">
+        <option value="equals">Equals</option>
+        <option value="contains">Contains</option>
+        <option value="startsWith">Starts With</option>
+        <option value="endsWith">Ends With</option>
+        <option value="notEqual">Not Equal</option>
+        <option value="greaterThan">Greater Than</option>
+        <option value="lessThan">Less Than</option>
+        <option value="isNull">Is Null</option>
+        <option value="isNotNull">Is Not Null</option>
+      </select>
+    </div>
+    <div>
+      <label for="filterValue">Filter Value:</label>
+      <input type="text" id="filterValue">
+    </div>
+
     <h2>Enter Sheet Name</h2>
     <p>Enter a name for the sheet where you want to import the data.</p>
     <input type="text" id="sheetName" value="Sheet1" required><br><br>
@@ -75,6 +102,9 @@
     var form = document.getElementById('form');
     var table = document.getElementById('table');
     var sheetName = document.getElementById('sheetName');
+    var filterColumn = document.getElementById('filterColumn');
+    var filterType = document.getElementById('filterType');
+    var filterValue = document.getElementById('filterValue');
     var submit = document.getElementById('submit');
     var error = document.getElementById('error');
 
@@ -113,6 +143,16 @@
             tr.appendChild(th);
           }
           table.appendChild(tr);
+
+          // Populate filter column dropdown
+          filterColumn.innerHTML = '';
+          for (var i = 0; i < header.length; i++) {
+            var option = document.createElement('option');
+            option.value = i;
+            option.text = header[i];
+            filterColumn.appendChild(option);
+          }
+
           form.style.display = 'block';
           error.style.display = 'none';
 
@@ -126,16 +166,23 @@
             }
             if (columns.length > 0) {
               var sheetNameValue = sheetName.value;
-              if (sheetNameValue) {
+              var filterColumnValue = filterColumn.value;
+              var filterTypeValue = filterType.value;
+              var filterValueValue = filterValue.value;
+
+              if (sheetNameValue && filterColumnValue !== null && filterTypeValue !== null && filterValueValue !== null) {
                 var data = {
                   csv: csv,
                   columns: columns,
-                  sheetName: sheetNameValue
+                  sheetName: sheetNameValue,
+                  filterColumn: parseInt(filterColumnValue),  // Convert to integer
+                  filterType: filterTypeValue,
+                  filterValue: filterValueValue
                 };
                 google.script.run.withSuccessHandler(showSuccess).withFailureHandler(showError).importCSV(data);
                 form.style.display = 'none';
               } else {
-                error.innerHTML = 'Please enter a sheet name.';
+                error.innerHTML = 'Please enter a sheet name and select filter options.';
                 error.style.display = 'block';
               }
             } else {

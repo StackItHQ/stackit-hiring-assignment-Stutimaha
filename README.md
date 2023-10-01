@@ -64,6 +64,7 @@ Feel free to check the discussions tab, you might get something of help there. C
 In the fast-paced world of data analysis, where data flows incessantly like a river, a recurring headache plagues our valiant data analysts - the tiresome chore of importing CSV files into the Google Sheets arena. 
 
 **Imagine this:** a typical week for an analyst involves juggling multiple CSV files 📁 containing sales figures, inventory data, and customer feedback. 
+
 **However**, instead of diving straight into the thrilling realm of data analysis, these professionals spend an inordinate amount of time wrestling with CSV import processes, delaying the extraction of crucial insights 😫.
 
 ### 🔮 The Vision: A Seamless Data Entry Oasis
@@ -86,4 +87,5 @@ The journey, though successful, left some stones unturned due to the ticking clo
 In essence, the CSV Importer for Google Sheets became a bridge between the arduous task of data import and the exciting realm of analysis 📈, with room for even more innovations in the chapters to come. 🌟
 
 🌐 [Link to Project](https://script.google.com/macros/s/AKfycbzkXXEa7qa3y53F4GQOFph28mOVjZdQV73WGrs-xHkRsAjvQNDrha98BMYQpTGfAQc8/exec)
+
 📊 [Link to Results](https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0)

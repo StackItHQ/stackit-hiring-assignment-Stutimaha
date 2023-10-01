@@ -48,14 +48,42 @@ Once you're done, make sure you **record a video** showing your project working.
 
 We have a checklist at the bottom of this README file, which you should update as your progress with your assignment. It will help us evaluate your project.
 
-- [ ] My code's working just fine! 🥳
+- [X] My code's working just fine! 🥳
 - [ ] I have recorded a video showing it working and embedded it in the README ▶️
-- [ ] I have tested all the normal working cases 😎
-- [ ] I have even solved some edge cases (brownie points) 💪
-- [ ] I added my very planned-out approach to the problem at the end of this README 📜
+- [X] I have tested all the normal working cases 😎
+- [X] I have even solved some edge cases (brownie points) 💪
+- [X] I added my very planned-out approach to the problem at the end of this README 📜
 
 ## Got Questions❓
 Feel free to check the discussions tab, you might get something of help there. Check out that tab before reaching out to us. Also, did you know, the internet is a great place to explore 😛
 
 ## Developer's Section
 *Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
+
+### 🌟 Illuminating the Data Import Struggle
+In the fast-paced world of data analysis, where data flows incessantly like a river, a recurring headache plagues our valiant data analysts - the tiresome chore of importing CSV files into the Google Sheets arena. 
+
+**Imagine this:** a typical week for an analyst involves juggling multiple CSV files 📁 containing sales figures, inventory data, and customer feedback. 
+**However**, instead of diving straight into the thrilling realm of data analysis, these professionals spend an inordinate amount of time wrestling with CSV import processes, delaying the extraction of crucial insights 😫.
+
+### 🔮 The Vision: A Seamless Data Entry Oasis
+Empathy for their struggle fueled my determination to make a change. The vision was crystal clear: a CSV Importer for Google Sheets that lets analysts simply drag and drop their CSV files onto the sheet 📄, and with a few clicks, choose the columns to import. 
+
+But it wasn't just about import; I wanted to make it even more user-friendly by allowing them to filter the data before it even hits Google Sheets. Efficiency was the goal - save time on the mundane, focus on the meaningful.
+
+### 💻 Unveiling the Wizardry: The Technical Magic
+- Embarking on the technical side, I delved into Google Apps Script, creating a web app interface using HTMLService.
+- The heart of the solution lies in the `importCSV` function, handling the import based on provided data.
+- Parsing CSV using the PapaParse library 📦, the script dynamically generates checkboxes for column selection. 
+- Filters, a crucial aspect, were implemented with various filter types like 'equals,' 'contains,' and more 🔍.
+
+### 🚀 Results: From Frustration to Elation
+As the code unfolded, so did the capabilities. Users could drag, drop, select columns, apply filters, and watch the magic unfold. The script seamlessly validated and mapped data, populating the Google Sheet efficiently. The interface was clean, and error handling robust - a CSV imported successfully message greeted users on success, while any hiccups were caught and communicated.
+
+### 🌈 Future Improvements: Dreams in the Pipeline
+The journey, though successful, left some stones unturned due to the ticking clock. 🕰️ Automatic detection of CSV delimiters, a feature that would add a layer of adaptability, was in the pipeline. I envisioned a transformational phase where users could not only import but also manipulate data on-the-fly – sorting, grouping, aggregating, and formatting. Saving import settings for future use and a progress indicator 📊 were on my wishlist, enhancing the tool's practicality. Alas, the constraints of time held these aspirations back, but the foundation is laid for future enhancements.
+
+In essence, the CSV Importer for Google Sheets became a bridge between the arduous task of data import and the exciting realm of analysis 📈, with room for even more innovations in the chapters to come. 🌟
+
+🌐 [Link to Project](https://script.google.com/macros/s/AKfycbzkXXEa7qa3y53F4GQOFph28mOVjZdQV73WGrs-xHkRsAjvQNDrha98BMYQpTGfAQc8/exec)
+📊 [Link to Results](https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0)

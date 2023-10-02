@@ -49,7 +49,7 @@ Once you're done, make sure you **record a video** showing your project working.
 We have a checklist at the bottom of this README file, which you should update as your progress with your assignment. It will help us evaluate your project.
 
 - [X] My code's working just fine! 🥳
-- [ ] I have recorded a video showing it working and embedded it in the README ▶️
+- [X] I have recorded a video showing it working and embedded it in the README ▶️
 - [X] I have tested all the normal working cases 😎
 - [X] I have even solved some edge cases (brownie points) 💪
 - [X] I added my very planned-out approach to the problem at the end of this README 📜
@@ -58,7 +58,11 @@ We have a checklist at the bottom of this README file, which you should update a
 Feel free to check the discussions tab, you might get something of help there. Check out that tab before reaching out to us. Also, did you know, the internet is a great place to explore 😛
 
 ## Developer's Section
-*Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
+🌐 [Link to Project](https://script.google.com/macros/s/AKfycbwGt0sSNZqKHjUSnWmkPlry_kq1kcoaedywMHJCkPxdPJ6ZxUdIC-5d_r_kvSpHVB0p/exec)
+
+📼 [Link to Demonstration](https://youtu.be/Xd3sLtA0WYs)
+
+📊 [Link to Results](https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0)
 
 ### 🌟 Illuminating the Data Import Struggle
 In the fast-paced world of data analysis, where data flows incessantly like a river, a recurring headache plagues our valiant data analysts - the tiresome chore of importing CSV files into the Google Sheets arena. 
@@ -87,5 +91,7 @@ The journey, though successful, left some stones unturned due to the ticking clo
 In essence, the CSV Importer for Google Sheets became a bridge between the arduous task of data import and the exciting realm of analysis 📈, with room for even more innovations in the chapters to come. 🌟
 
 🌐 [Link to Project](https://script.google.com/macros/s/AKfycbwGt0sSNZqKHjUSnWmkPlry_kq1kcoaedywMHJCkPxdPJ6ZxUdIC-5d_r_kvSpHVB0p/exec)
+
+📼 [Link to Demonstration](https://youtu.be/Xd3sLtA0WYs)
 
 📊 [Link to Results](https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0)

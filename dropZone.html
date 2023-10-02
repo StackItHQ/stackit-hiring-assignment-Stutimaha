@@ -1,107 +1,167 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Importer for Google Sheets</title>
   <!-- Styling for the drop zone and form -->
   <style>
-    /* Styling for the drop zone */
+    /* General styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header styling */
+    h1 {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin: 0;
+    }
+
+    /* Drop zone styling */
     #drop_zone {
       border: 2px dashed #bbb;
       border-radius: 5px;
-      padding: 25px;
+      padding: 20px;
       text-align: center;
-      font-family: Arial;
-      font-size: 20px;
+      font-size: 20px; /* Increased font size to 20 */
+      background-color: #fff;
+      margin: 20px auto;
+      max-width: 90%;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: middle; /* Center-middle alignment */
     }
 
-    /* Styling for the drop zone when dragging over it */
-    #drop_zone.dragover {
-      border-color: #999;
-    }
-
-    /* Styling for the form */
+    /* Form styling */
     #form {
       display: none;
-      margin: 10px;
+      padding: 10px;
+      background-color: #fff;
+      margin: 0 auto;
+      max-width: 400px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Styling for the submit button */
-    #submit {
+    /* Input field styling */
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    /* Filter row styling */
+    .filterRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    /* Button styling */
+    #addFilter {
       background-color: #4CAF50;
       color: white;
-      padding: 10px 20px;
       border: none;
+      padding: 8px 12px;
       cursor: pointer;
+      border-radius: 4px;
     }
 
-    /* Styling for the table */
-    #table {
-      border-collapse: collapse;
-      margin: 10px;
-    }
-
-    /* Styling for table cells */
-    #table td {
-      border: 1px solid #ddd;
-      padding: 5px;
-    }
-
-    /* Styling for table header cells */
-    #table th {
-      background-color: #f0f0f0;
-      border: 1px solid #ddd;
-      padding: 5px;
-    }
-
-    /* Styling for checkbox */
-    input[type=checkbox] {
-      transform: scale(1.5);
-    }
-
-    /* Styling for error messages */
+    /* Error message styling */
     #error {
       color: red;
       font-weight: bold;
       margin: 10px;
     }
 
-    /* Additional styles for filters */
-    .filterRow {
-      margin: 5px 0;
+    /* Submit button styling */
+    #submit {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    /* Remove button styling (in red) */
+    .removeFilterButton {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    /* Hyperlink styling */
+    a {
+      font-weight: bold; /* Added font weight for emphasis */
     }
   </style>
-
-  <!-- Include the PapaParse library for CSV parsing -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-  <!-- Header and introductory information -->
+  <!-- Header -->
   <h1>CSV Importer for Google Sheets</h1>
-  <p>Drag and drop a CSV file onto the drop zone below to import it into a Google Sheet.</p>
 
   <!-- Drop zone for CSV file -->
-  <div id="drop_zone">Drop CSV file here</div>
+  <div id="drop_zone">
+    <p>Drag and drop a CSV file here to import it into a Google Sheet.</p>
+  </div>
 
   <!-- Form for selecting columns, entering sheet name, applying filters, and submitting -->
   <form id="form">
     <h2>Select Columns to Import</h2>
-    <p>Choose which columns you want to import from the CSV file.</p>
-    <table id="table"></table>
+    <table id="table">
+      <!-- Headers will be dynamically generated here -->
+    </table>
 
     <h2>Enter Sheet Name</h2>
-    <p>Enter a name for the sheet where you want to import the data.</p>
-    <input type="text" id="sheetName" value="Sheet1" required><br><br>
+    <input type="text" id="sheetName" value="Sheet1" required>
 
     <h2>Apply Filters</h2>
-    <div id="filters"></div>
-    <input type="button" id="addFilter" value="Add Filter">
-    <br><br>
+    <div id="filters">
+      <!-- Filter rows will be dynamically generated here -->
+    </div>
+    <button type="button" id="addFilter">Add Filter</button>
+
+    <!-- Error message display -->
+    <p id="error"></p>
 
     <!-- Button to submit the form and trigger the import process -->
-    <input type="button" id="submit" value="Import to Sheet">
+    <button type="button" id="submit">Import to Sheet</button>
   </form>
 
-  <!-- Display error messages -->
-  <p id="error"></p>
-
+  <!-- JavaScript code for handling file drop, form submission, and filter functionality -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  
   <!-- JavaScript code for handling file drop, form submission, and filter functionality -->
   <script>
     // Variable declarations for various elements
@@ -143,19 +203,21 @@
 
           // Dynamically create checkboxes for each column in the CSV file
           table.innerHTML = '';
-          var tr = document.createElement('tr');
           for (var i = 0; i < header.length; i++) {
-            var th = document.createElement('th');
+            var tr = document.createElement('tr');
+            var thHeader = document.createElement('th');
+            var thCheckbox = document.createElement('th');
             var checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = true;
             checkbox.value = i;
-            th.appendChild(checkbox);
+            thCheckbox.appendChild(checkbox);
             var text = document.createTextNode(header[i]);
-            th.appendChild(text);
-            tr.appendChild(th);
+            thHeader.appendChild(text);
+            tr.appendChild(thHeader);
+            tr.appendChild(thCheckbox);
+            table.appendChild(tr);
           }
-          table.appendChild(tr);
           form.style.display = 'block';
           error.style.display = 'none';
 
@@ -202,16 +264,16 @@
 
     // Function to display success message
     function showSuccess(response) {
-    // Create a hyperlink with the provided URL
-    var link = document.createElement('a');
-    link.href = 'https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0';
-    link.target = '_blank'; // Open the link in a new tab
-    link.textContent = 'CSV imported successfully! Open Google Sheets and find your worksheet!!';
+      // Create a hyperlink with the provided URL
+      var link = document.createElement('a');
+      link.href = 'https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0';
+      link.target = '_blank'; // Open the link in a new tab
+      link.textContent = 'CSV imported successfully! Open Google Sheets and find your worksheet!!';
 
-    // Clear the drop zone and append the hyperlink
-    dropZone.innerHTML = '';
-    dropZone.appendChild(link);
-  }
+      // Clear the drop zone and append the hyperlink
+      dropZone.innerHTML = '';
+      dropZone.appendChild(link);
+    }
 
     // Function to display error message
     function showError(error) {
@@ -257,7 +319,7 @@
     // Function to create a dropdown for selecting columns
     function createColumnDropdown() {
       var dropdown = document.createElement('select');
-      var headerCells = table.querySelectorAll('th');
+      var headerCells = table.querySelectorAll('th:first-child');
       if (headerCells && headerCells.length > 0) {
         for (var i = 0; i < headerCells.length; i++) {
           var option = document.createElement('option');

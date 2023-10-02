@@ -86,6 +86,6 @@ The journey, though successful, left some stones unturned due to the ticking clo
 
 In essence, the CSV Importer for Google Sheets became a bridge between the arduous task of data import and the exciting realm of analysis 📈, with room for even more innovations in the chapters to come. 🌟
 
-🌐 [Link to Project](https://script.google.com/macros/s/AKfycbwGt0sSNZqKHjUSnWmkPlry_kq1kcoaedywMHJCkPxdPJ6ZxUdIC-5d_r_kvSpHVB0p/exec)
+🌐 [Link to Project](https://script.google.com/macros/s/AKfycbwGt0sSNZqKHjUSnWmkPlry_kq1kcoaedywMHJCkPxdPJ6ZxUdIC-5d_r_kvSpHVB0p/exec{:target="_blank"})
 
-📊 [Link to Results](https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0)
+📊 [Link to Results](https://docs.google.com/spreadsheets/d/1gqjOL1CGLoYUkA3Q9t9o3MVaJYLThuqavpF3vGASvCY/edit#gid=0){:target="_blank"}

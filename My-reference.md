@@ -1,5 +1,4 @@
 **Points to Work on:**
-- improve UI
 - make a new google sheet for each csv in user's drive
 - optimize for large files
 - feature to detect the delimiter of the CSV file automatically and let the user change it if needed. 
